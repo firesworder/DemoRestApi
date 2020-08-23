@@ -11,4 +11,12 @@ class ProductRepository extends EntityRepository
     {
         echo self::class;
     }
+
+    public function getProductIdList()
+    {
+        $dql = 'SELECT p.id FROM App\Entity\Product p';
+
+        $query = $this->getEntityManager()->createQuery($dql);
+        return array_column($query->getScalarResult(), 'id');
+    }
 }
