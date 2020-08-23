@@ -3,7 +3,7 @@
 
 namespace App\Controller;
 
-use App\Kernel;
+use App\AppContainer;
 use Doctrine\ORM\EntityManagerInterface;
 
 class AbstractController
@@ -15,7 +15,6 @@ class AbstractController
 
     public function __construct()
     {
-        $container = Kernel::getContainer();
-        $this->entityManager = $container->get('entityManager')->getEntityManager();
+        $this->entityManager = AppContainer::getEntityManager();
     }
 }

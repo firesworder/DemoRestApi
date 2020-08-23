@@ -1,6 +1,8 @@
 <?php
 require_once getenv('PROJECT_DIR') . '/config/prolog.php';
 use App\Service\Order\OrderCreate;
+use App\AppContainer;
+$entityManager = AppContainer::getEntityManager();
 
 $productIds = explode(',',$argv[1]);
 $service = new OrderCreate($entityManager);

@@ -1,6 +1,8 @@
 <?php
 require_once getenv('PROJECT_DIR') . '/config/prolog.php';
 use App\Entity\Product;
+use App\AppContainer;
+$entityManager = AppContainer::getEntityManager();
 
 $productName = $argv[1];
 $productPrice = $argv[2];

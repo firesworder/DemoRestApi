@@ -2,6 +2,8 @@
 require_once getenv('PROJECT_DIR') . '/config/prolog.php';
 
 use App\Service\Order\OrderPay;
+use App\AppContainer;
+$entityManager = AppContainer::getEntityManager();
 
 $orderId = $argv[1];
 $moneyAmount = $argv[2];

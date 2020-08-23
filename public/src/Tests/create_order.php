@@ -1,6 +1,9 @@
 <?php
 require_once getenv('PROJECT_DIR') . '/config/prolog.php';
+
 use App\Entity\{Order, Product};
+use App\AppContainer;
+$entityManager = AppContainer::getEntityManager();
 
 $productIdList = explode(',',$argv[1]);
 $orderStatus = $argv[2];

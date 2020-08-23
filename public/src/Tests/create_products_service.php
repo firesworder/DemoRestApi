@@ -2,6 +2,8 @@
 require_once getenv('PROJECT_DIR') . '/config/prolog.php';
 use App\Service\Product\ProductListCreate;
 use App\Entity\Product;
+use App\AppContainer;
+$entityManager = AppContainer::getEntityManager();
 
 $service = new ProductListCreate($entityManager);
 echo 'Result is ' . $service->createProductList();

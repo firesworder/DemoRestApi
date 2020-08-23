@@ -1,5 +1,6 @@
 <?php
 namespace App;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -21,18 +22,12 @@ class Kernel
      */
     private $routes;
 
-    private static $container;
-
     public function __construct()
     {
         $projectDir = getenv('PROJECT_DIR');
         $fileLocator = new FileLocator([$projectDir . '/config/']);
         $yamlLoader = new YamlFileLoader($fileLocator);
         $this->routes = $yamlLoader->load('routes.yaml');
-
-        $container = self::getContainer();
-        $container->register('entityManager', EntityManagerContainer::class)
-            ->addArgument($projectDir);
     }
 
     public function execute()
@@ -50,13 +45,5 @@ class Kernel
         $response->send();
 
         $kernel->terminate($request, $response);
-    }
-
-    public static function getContainer()
-    {
-        if(!self::$container) {
-            self::$container = new ContainerBuilder();
-        }
-        return self::$container;
     }
 }
