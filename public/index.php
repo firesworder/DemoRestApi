@@ -1,2 +1,2 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/config/prolog.php';
+require_once 'config/prolog.php';
