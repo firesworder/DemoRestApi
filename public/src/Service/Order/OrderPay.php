@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use GuzzleHttp\Client;
 use InvalidArgumentException;
+use Symfony\Component\HttpFoundation\Response;
 
 class OrderPay
 {
@@ -28,8 +29,16 @@ class OrderPay
             ->find($id);
 
         if($order === null) {
-            throw new InvalidArgumentException('Заказ с таким id не существует');
+            throw new InvalidArgumentException('Заказа с таким id не существует');
         }
+
+        if($order->getStatus() !== Order::ORDER_NEW_STATUS) {
+            throw new Exception(
+                'Для возможности оплаты заказа он должен иметь статус "New"(новый)',
+                Response::HTTP_NOT_ACCEPTABLE
+            );
+        }
+
         $orderProducts = $order->getProducts();
 
         $orderAmount = 0;
@@ -38,7 +47,10 @@ class OrderPay
         }
 
         if($orderAmount !== $moneyAmount) {
-            throw new Exception('Сумма оплаты заказа меньше стоимости заказа');
+            throw new InvalidArgumentException(
+                'Сумма оплаты заказа не равна стоимости заказа',
+                Response::HTTP_NOT_ACCEPTABLE
+            );
         }
 
         $httpClient = new Client();
@@ -46,7 +58,7 @@ class OrderPay
             ->getStatusCode();
 
         if($paymentConfirmationStatus !== 200) {
-            throw new Exception('Не удалось получить подтверждение от платежной системы');
+            throw new Exception('Не удалось получить подтверждение от платежной системы',Response::HTTP_EXPECTATION_FAILED);
         }
 
         $order->setStatus('Payed');

@@ -11,6 +11,9 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Order
 {
+    public const ORDER_PAYED_STATUS = 'Payed';
+    public const ORDER_NEW_STATUS = 'New';
+
     /**
      * @ORM\Id
      * @ORM\Column (type="integer")
