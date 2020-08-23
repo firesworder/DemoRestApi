@@ -25,13 +25,14 @@ class Kernel
 
     public function __construct()
     {
-        $fileLocator = new FileLocator([ROOT_PATH . '/config/']);
+        $projectDir = getenv('PROJECT_DIR');
+        $fileLocator = new FileLocator([$projectDir . '/config/']);
         $yamlLoader = new YamlFileLoader($fileLocator);
         $this->routes = $yamlLoader->load('routes.yaml');
 
         $container = self::getContainer();
         $container->register('entityManager', EntityManagerContainer::class)
-            ->addArgument(ROOT_PATH);
+            ->addArgument($projectDir);
     }
 
     public function execute()

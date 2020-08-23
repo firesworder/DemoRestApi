@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../../config/prolog.php';
+require_once getenv('PROJECT_DIR') . '/config/prolog.php';
 use App\Controller\OrderController;
 use Symfony\Component\HttpFoundation\Request;
 
