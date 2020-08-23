@@ -16,7 +16,7 @@ class ProductController extends AbstractController
             $result = $service->createProductList();
             return new JsonResponse(['result' => ['status' => $result]], Response::HTTP_OK);
         } catch (Throwable $exception) {
-            return new JsonResponse(['error' => $exception->getMessage(), Response::HTTP_BAD_REQUEST]);
+            return $this->handleException($exception);
         }
     }
 }
