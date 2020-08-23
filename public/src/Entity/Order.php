@@ -52,7 +52,7 @@ class Order
     /**
      * @param Product $product
      */
-    public function setProduct(Product $product)
+    public function addProduct(Product $product)
     {
         $this->products[] = $product;
         return $this;

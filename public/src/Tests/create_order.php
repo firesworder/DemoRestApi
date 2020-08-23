@@ -7,7 +7,7 @@ $orderStatus = $argv[2];
 $order = new Order();
 foreach ($productIdList as $productId) {
     $product = $entityManager->find(Product::class, $productId);
-    $order->setProduct($product);
+    $order->addProduct($product);
 }
 $order->setStatus($orderStatus);
 
