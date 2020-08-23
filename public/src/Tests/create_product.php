@@ -9,6 +9,6 @@ $product->setName($productName)
     ->setPrice(floatval($productPrice));
 
 $entityManager->persist($product);
-$entityManager->flush($product);
+$entityManager->flush();
 
 echo "Created Product with ID {$product->getId()} and price {$product->getPrice()} \n";
