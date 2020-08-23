@@ -6,7 +6,7 @@ use App\AppContainer;
 $entityManager = AppContainer::getEntityManager();
 
 $service = new ProductListCreate($entityManager);
-echo 'Result is ' . $service->createProductList();
+echo 'Result is ' . $service->execute();
 
 echo 'Count: ' . $entityManager->getRepository(Product::class)
     ->count([]);

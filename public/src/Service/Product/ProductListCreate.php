@@ -21,7 +21,7 @@ class ProductListCreate
      * TODO: не знаю, что вернуть стоит, либо список продуктов созданных, либо просто статус успех/неудача
      * @return bool результат операция создания продуктов (успех/неудача)
      */
-    public function createProductList() : bool
+    public function execute() : bool
     {
         for($i = 0; $i<20; $i+=1) {
             $product = new Product();
