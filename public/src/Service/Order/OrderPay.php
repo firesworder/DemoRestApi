@@ -18,6 +18,11 @@ class OrderPay
      */
     private $entityManager;
 
+    /**
+     * @var Order
+     */
+    private $order;
+
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
@@ -25,21 +30,40 @@ class OrderPay
 
     public function execute(int $id, float $moneyAmount) : bool
     {
-        $order = $this->entityManager->getRepository(Order::class)
+        $this->order = $this->entityManager->getRepository(Order::class)
             ->find($id);
 
-        if($order === null) {
+        $this->validatePayRequest($moneyAmount);
+
+        $httpClient = new Client();
+        $paymentConfirmationStatus = $httpClient->request('GET', 'ya.ru')
+            ->getStatusCode();
+
+        if($paymentConfirmationStatus !== 200) {
+            throw new Exception('Не удалось получить подтверждение от платежной системы',Response::HTTP_EXPECTATION_FAILED);
+        }
+
+        $this->order->setStatus('Payed');
+        $this->entityManager->persist($this->order);
+        $this->entityManager->flush();
+
+        return true;
+    }
+
+    private function validatePayRequest(float $moneyAmount)
+    {
+        if($this->order === null) {
             throw new InvalidArgumentException('Заказа с таким id не существует');
         }
 
-        if($order->getStatus() !== Order::ORDER_NEW_STATUS) {
+        if($this->order->getStatus() !== Order::ORDER_NEW_STATUS) {
             throw new Exception(
                 'Для возможности оплаты заказа он должен иметь статус "New"(новый)',
                 Response::HTTP_NOT_ACCEPTABLE
             );
         }
 
-        $orderProducts = $order->getProducts();
+        $orderProducts = $this->order->getProducts();
 
         $orderAmount = 0;
         foreach ($orderProducts as $product) {
@@ -52,19 +76,5 @@ class OrderPay
                 Response::HTTP_NOT_ACCEPTABLE
             );
         }
-
-        $httpClient = new Client();
-        $paymentConfirmationStatus = $httpClient->request('GET', 'ya.ru')
-            ->getStatusCode();
-
-        if($paymentConfirmationStatus !== 200) {
-            throw new Exception('Не удалось получить подтверждение от платежной системы',Response::HTTP_EXPECTATION_FAILED);
-        }
-
-        $order->setStatus('Payed');
-        $this->entityManager->persist($order);
-        $this->entityManager->flush();
-
-        return true;
     }
 }
