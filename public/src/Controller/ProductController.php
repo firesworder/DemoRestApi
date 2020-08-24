@@ -19,7 +19,7 @@ class ProductController extends AbstractController
         try {
             $service = new ProductListCreate($this->entityManager);
             $result = $service->execute();
-            return new JsonResponse(['result' => ['status' => $result]], Response::HTTP_OK);
+            return new JsonResponse(['result' => ['productIdList' => $result]], Response::HTTP_OK);
         } catch (Throwable $exception) {
             return $this->handleException($exception);
         }

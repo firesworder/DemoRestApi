@@ -19,23 +19,25 @@ class ProductListCreate
     }
 
     /**
-     * TODO: не знаю, что вернуть стоит, либо список продуктов созданных, либо просто статус успех/неудача
-     * @return bool результат операция создания продуктов (успех/неудача)
+     * Создает набор продуктов и возвращает их id
+     * @return array результат операция создания продуктов (успех/неудача)
      */
-    public function execute(): bool
+    public function execute(): array
     {
+        $products = [];
         // Рандомно сгенерировать 20 записей продуктов в бд
         for ($i = 0; $i < 20; $i += 1) {
             $product = new Product();
             $product->setName('Product_' . rand())
                 ->setPrice(rand(1, 1000));
             $this->entityManager->persist($product);
+            $products[] = $product;
         }
         unset($product);
 
         $this->entityManager->flush();
         $this->entityManager->clear();
 
-        return true;
+        return array_map(function($product) { return $product->getId(); }, $products);
     }
 }
