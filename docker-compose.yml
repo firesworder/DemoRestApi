@@ -12,14 +12,9 @@ services:
       - php
 
   php:
-    build: docker/php
+    build: php
     volumes:
-    - ./docker/php/php.ini:/usr/local/etc/php/php.ini
-    - ./public/src:/var/www/public/src
-    - ./public/index.php:/var/www/public/index.php
-    - ./public/config:/var/www/public/config
-    environment:
-      PROJECT_DIR: /var/www/public
+    - public-php:/var/www/public
 
   mysql:
     build: docker/mysql
@@ -28,3 +23,4 @@ services:
 
 volumes:
   db-volume:
+  public-php:
