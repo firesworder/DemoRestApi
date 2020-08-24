@@ -4,4 +4,8 @@ require_once 'config/prolog.php';
 use App\Kernel;
 
 $app = new Kernel();
-$app->execute();
+try {
+    $app->execute();
+} catch (Exception $e) {
+    echo 'Произошла ошибка. Попробуйте обратиться позднее';
+}
