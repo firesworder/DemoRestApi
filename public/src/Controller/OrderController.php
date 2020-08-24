@@ -4,7 +4,6 @@
 namespace App\Controller;
 use App\Service\Order\OrderCreate;
 use App\Service\Order\OrderPay;
-use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,9 +12,15 @@ use Throwable;
 
 class OrderController extends AbstractController
 {
+    /**
+     * Вызывает сервис orderCreate
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function createOrder(Request $request)
     {
         try {
+            //Проверка входных данных для сервиса
             $productIdList = $request->request->get('productIdList');
             if (!$productIdList || !is_array($productIdList)) {
                 throw new InvalidArgumentException(
@@ -32,9 +37,15 @@ class OrderController extends AbstractController
         }
     }
 
+    /**
+     * Вызывает сервис OrderPay
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function payOrder(Request $request)
     {
         try {
+            //Проверка входных данных для сервиса
             $orderId = intval($request->request->get('orderId'));
             $paymentAmount = floatval($request->request->get('paymentAmount'));
             if (!$orderId) {
@@ -46,6 +57,7 @@ class OrderController extends AbstractController
                     Response::HTTP_BAD_REQUEST
                 );
             }
+
             $service = new OrderPay($this->entityManager);
             $result = $service->execute($orderId, $paymentAmount);
             return new JsonResponse(['result' => ['status' => $result]], Response::HTTP_ACCEPTED);

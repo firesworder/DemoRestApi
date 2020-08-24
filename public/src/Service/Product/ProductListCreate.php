@@ -2,6 +2,7 @@
 
 
 namespace App\Service\Product;
+
 use App\Entity\Product;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -21,12 +22,13 @@ class ProductListCreate
      * TODO: не знаю, что вернуть стоит, либо список продуктов созданных, либо просто статус успех/неудача
      * @return bool результат операция создания продуктов (успех/неудача)
      */
-    public function execute() : bool
+    public function execute(): bool
     {
-        for($i = 0; $i<20; $i+=1) {
+        // Рандомно сгенерировать 20 записей продуктов в бд
+        for ($i = 0; $i < 20; $i += 1) {
             $product = new Product();
             $product->setName('Product_' . rand())
-                ->setPrice(rand(0,1000));
+                ->setPrice(rand(1, 1000));
             $this->entityManager->persist($product);
         }
         unset($product);
@@ -34,7 +36,6 @@ class ProductListCreate
         $this->entityManager->flush();
         $this->entityManager->clear();
 
-        //TODO: возможно стоило бы проверить, что оно добавилось все
         return true;
     }
 }

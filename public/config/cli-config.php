@@ -1,4 +1,7 @@
 <?php
+/**
+ * Скрипт для работы doctrine/orm из cli
+ */
 require_once 'prolog.php';
 
 use Doctrine\ORM\Tools\Console\ConsoleRunner;

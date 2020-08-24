@@ -9,6 +9,11 @@ use Throwable;
 
 class ProductController extends AbstractController
 {
+    /**
+     * Вызывает сервис ProductListCreate
+     * (Сервис создает стартовый набор продуктов)
+     * @return JsonResponse
+     */
     public function createProducts()
     {
         try {

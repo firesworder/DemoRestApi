@@ -1,5 +1,8 @@
 <?php
+
 namespace App;
+
+use Exception;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -24,12 +27,17 @@ class Kernel
 
     public function __construct()
     {
+        //Получить маршруты из routes.yaml для роутинга
         $projectDir = getenv('PROJECT_DIR');
         $fileLocator = new FileLocator([$projectDir . '/config/']);
         $yamlLoader = new YamlFileLoader($fileLocator);
         $this->routes = $yamlLoader->load('routes.yaml');
     }
 
+    /**
+     * Реализует процесс обработки все входящих запросов через HttpKernel
+     * @throws Exception
+     */
     public function execute()
     {
         $request = Request::createFromGlobals();
@@ -41,7 +49,7 @@ class Kernel
         $dispatcher->addSubscriber($routerListener);
 
         $kernel = new HttpKernel($dispatcher, new ControllerResolver(), new RequestStack(), new ArgumentResolver());
-        try{
+        try {
             $response = $kernel->handle($request);
         } catch (NotFoundHttpException  $exception) {
             $response = new Response('Страница не найдена', Response::HTTP_NOT_FOUND);

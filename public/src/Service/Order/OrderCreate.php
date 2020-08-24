@@ -26,12 +26,14 @@ class OrderCreate
      */
     public function execute(array $productIdList) : int
     {
+        //Если пришел пустой массив id продуктов - выбросить исключение
         if(empty($productIdList)) {
             throw new InvalidArgumentException('Массив ID продуктов не может быть пустым!');
         }
 
         $products = $this->entityManager->getRepository(Product::class)->findBy(['id' => $productIdList]);
 
+        //Если продуктов по данным id не найдено или найдено меньше чем передано самих id - выбросить исключение
         if (empty($products) || count($products) < count($productIdList)) {
             throw new InvalidArgumentException('Часть продуктов с переданными ID не существует');
         }
