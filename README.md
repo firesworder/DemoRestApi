@@ -4,6 +4,8 @@
 
 URL: /product/create-products
 
+Тип запроса: POST
+
 Вход: -
 
 Выход: array productsIds 
@@ -13,6 +15,8 @@ URL: /product/create-products
 *Создание образа:*
 
 URL: /order/create
+
+Тип запроса: POST
 
 Вход: 
 - array productIdList список id продуктов для создания заказа
@@ -24,6 +28,8 @@ URL: /order/create
 *Генерация продуктов:*
 
 URL: /order/pay
+
+Тип запроса: PUT
 
 Вход: 
 - orderId - id заказа
